@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.architectureexample.viewmodel.MainActivityViewmodel
 import com.example.architectureexample.R
@@ -24,6 +25,22 @@ class MainActivity : AppCompatActivity() {
         addButton = findViewById<Button>(R.id.addButton)
         deleteButton = findViewById<Button>(R.id.deleteButton)
         editText = findViewById<EditText>(R.id.editText)
+        viewModel!!.getAllNotes().observe(this) {
+            textView.setText("")
+            val notes = viewModel!!.getAllNotes().value
+            for (note in notes!!) {
+                textView.append(
+                    """
+                $note
+                
+                
+                
+                """.trimIndent()
+                )
+            }
+
+        }
+
 
         addButton.setOnClickListener(){
             addNote()
@@ -49,18 +66,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun displayNotes() {
-        textView.setText("")
-        val notes = viewModel!!.getAllNotes()
-        for (note in notes!!) {
-            textView.append(
-                """
-                $note
-                
-                
-                
-                """.trimIndent()
-            )
-        }
+
     }
 
 }
